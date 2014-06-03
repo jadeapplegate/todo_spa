@@ -6,11 +6,11 @@ $(function(){
 
     var App = {}; 
     window.App = App;
-
+    //we may not need these two lines since our data is now persisting
     var todos = [];
-    
     App.models = todos;
 
+//finds model by id so that we can click on that particular todo and select complete
     App.findModel = function(id){
         var foundModel;
        $(this.models).each( function(index, item){
@@ -58,13 +58,22 @@ $(function(){
         return this;
     };
 
-    App.saveModel = function(model, callback){
-        // DO SOME STUFF HERE TO PERSIST DATA
+      App.saveModel = function(model, callback){
+        console.log(model);
+     // DO SOME STUFF HERE TO PERSIST DATA (adding ajax post method)
+        $.ajax({
+            url: this.urls.create.path,
+            type: this.urls.create.method,
+            data: {todo: model}
+        });
         callback(model);
-    };
+     };
 
     App.updateItem = function(model, callback){
         // DO SOMETHING HERE
+
+
+
         callback(model);  
     };
 
@@ -78,13 +87,14 @@ $(function(){
         create : { path : '/todos.json', method : 'post'}
     };
 
+//AJAX post method
     App.getItems = function(callback) {
         $.ajax({
             url : this.urls.index.path,
             type : this.urls.index.method
         }).done(callback);
     }
-
+//appends todo to the page
     App.setTargetTemplate("#todos", "todo")
     .renderAllModels().doThis(function(){
         var _this = this;
