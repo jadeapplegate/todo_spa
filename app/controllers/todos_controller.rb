@@ -17,8 +17,17 @@ class TodosController < ApplicationController
   end
 
   def update
-    @todo = todo.find_by_id(params[:id])
+    @todo = Todo.find_by_id(params[:id])
     @todo.update todo_params
+
+    respond_to do |f|
+      f.json { render :json => @todo, only: [:id, :title, :completed]}
+    end
+  end
+
+  def destroy
+    @todo = Todo.find_by_id(params[id])
+    @todo.destroy
   end
 
   private

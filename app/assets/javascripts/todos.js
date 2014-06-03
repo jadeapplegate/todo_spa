@@ -60,7 +60,7 @@ $(function(){
 
       App.saveModel = function(model, callback){
         console.log(model);
-     // DO SOME STUFF HERE TO PERSIST DATA (adding ajax post method)
+     // adding ajax post method
         $.ajax({
             url: this.urls.create.path,
             type: this.urls.create.method,
@@ -70,12 +70,24 @@ $(function(){
      };
 
     App.updateItem = function(model, callback){
-        // DO SOMETHING HERE
+        // (ajax post method to update model finding by id)
+    $.ajax({
+            url: '/todos/'+ model.id + '.json',
+            type: 'put',
+            data: {todo: model}
+        });
+        callback(model);
+     };
 
-
-
-        callback(model);  
-    };
+     App.deleteItem = function(model, callback){
+        //deletes item found by id (ajax delete)
+        $.ajax({
+            url: '/todos/' + model.id,
+            type: 'delete'
+            // data: {todo: model}
+        });
+        callback(model);
+     };
 
     App.doThis = function(func){
     	func.apply(App);
@@ -112,13 +124,12 @@ $(function(){
         
     });
 
-
     App.doThis(function(){
         var _this = this;
         
         //CHECKBOX EVENTHANDLER
         $("#todos").on("click", ".todo", function(event){
-           console.log(this.dataset); 
+           // console.log(this.dataset); 
            var id = Number(this.dataset.id);
            if(event.target.name === "completed"){
                 console.log("FIRED!!!")
@@ -139,6 +150,12 @@ $(function(){
             _this.models = _this.models.concat(responseData);
             _this.renderAllModels();
         });
+    });
+    //DELETE EVENTHANDLER
+    App.doThis(function(){
+    $('#removeTodo').on('click', '.todo', function(event){
+        console.log('YAY')
+    });
     });
 
 });
