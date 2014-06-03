@@ -64,9 +64,11 @@ $(function(){
         $.ajax({
             url: this.urls.create.path,
             type: this.urls.create.method,
-            data: {todo: model}
+            data: {todo: model},
+            success: function(todo){
+                callback(todo);
+            }
         });
-        callback(model);
      };
 
     App.updateItem = function(model, callback){
