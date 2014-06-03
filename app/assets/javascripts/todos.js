@@ -82,7 +82,7 @@ $(function(){
      App.deleteItem = function(model, callback){
         //deletes item found by id (ajax delete)
         $.ajax({
-            url: '/todos/' + model.id,
+            url: '/todos/' + model.id + '.json'
             type: 'delete'
             // data: {todo: model}
         });
@@ -127,9 +127,10 @@ $(function(){
     App.doThis(function(){
         var _this = this;
         
-        //CHECKBOX EVENTHANDLER
+        //TODO EVENTHANDLER
         $("#todos").on("click", ".todo", function(event){
            // console.log(this.dataset); 
+           console.log(event.target)
            var id = Number(this.dataset.id);
            if(event.target.name === "completed"){
                 console.log("FIRED!!!")
@@ -139,6 +140,13 @@ $(function(){
                _this.updateItem(todo, function(data){
                     $(view).toggleClass("done-true");
                });
+           }
+           else if(event.target.id === 'removeTodo'){
+            console.log(this);
+            App.deleteItem(this.dataset.id, function(data) {
+                this.$el = $(this.template(item));
+                this.$target.remove(this.$el);
+            });
            }
         });
     });
@@ -151,11 +159,11 @@ $(function(){
             _this.renderAllModels();
         });
     });
-    //DELETE EVENTHANDLER
-    App.doThis(function(){
-    $('#removeTodo').on('click', '.todo', function(event){
-        console.log('YAY')
-    });
-    });
 
 });
+
+
+
+
+
+

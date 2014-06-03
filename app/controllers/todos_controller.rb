@@ -17,7 +17,7 @@ class TodosController < ApplicationController
   end
 
   def update
-    @todo = Todo.find_by_id(params[:id])
+    @todo = Todo.find(params[:id])
     @todo.update todo_params
 
     respond_to do |f|
@@ -26,8 +26,10 @@ class TodosController < ApplicationController
   end
 
   def destroy
-    @todo = Todo.find_by_id(params[id])
-    @todo.destroy
+    Todo.find(params[:id]).destroy
+    respond_to do |f|
+      f.json { render :json => "deleted!"}
+    end
   end
 
   private
