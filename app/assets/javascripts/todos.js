@@ -82,7 +82,7 @@ $(function(){
      App.deleteItem = function(model, callback){
         //deletes item found by id (ajax delete)
         $.ajax({
-            url: '/todos/' + model.id + '.json'
+            url: '/todos/' + model.id + '.json',
             type: 'delete'
             // data: {todo: model}
         });
@@ -130,7 +130,7 @@ $(function(){
         //TODO EVENTHANDLER
         $("#todos").on("click", ".todo", function(event){
            // console.log(this.dataset); 
-           console.log(event.target)
+           // console.log(event.target)
            var id = Number(this.dataset.id);
            if(event.target.name === "completed"){
                 console.log("FIRED!!!")
@@ -141,11 +141,13 @@ $(function(){
                     $(view).toggleClass("done-true");
                });
            }
+           //if event target of delete button is clicked, remove it and remove from view(page)
            else if(event.target.id === 'removeTodo'){
             console.log(this);
-            App.deleteItem(this.dataset.id, function(data) {
-                this.$el = $(this.template(item));
-                this.$target.remove(this.$el);
+            var view = this;
+            var todo = _this.findModel(id);
+            App.deleteItem(todo, function(data) {
+                $(view).remove();
             });
            }
         });
